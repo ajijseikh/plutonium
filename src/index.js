@@ -1,6 +1,6 @@
 const express = require('express');
 var bodyParser = require('body-parser');
-
+// const lodash=require("lodash")
 const route = require('./routes/route.js');
 
 const app = express();

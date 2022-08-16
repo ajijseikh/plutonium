@@ -1,13 +1,28 @@
 const express = require('express');
 const abc = require('../introduction/intro')
+const logger=require("../logger/logger.js")
+const hel=require("../util/helper")
+const formatter=require("../validator/formatter")
 const router = express.Router();
 
 router.get('/test-me', function (req, res) {
-    console.log('My batch is', abc.name)
+     console.log('My batch is', abc.name)
     abc.printName()
     logger.welcome()
+    hel.presentDate()
+    hel.printMonth()
+    hel.getBatchInfo()
+    formatter.format()
+    formatter.printDivideMonth()
+    formatter.odd()
+    formatter.merge()
+    formatter.frompair()
+    
 
-    res.send('My second ever api!')
+
+
+
+    res.send('My second ever api!',)
 });
 
 router.get('/students', function (req, res){
