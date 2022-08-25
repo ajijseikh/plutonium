@@ -1,26 +1,101 @@
+const userModel=require("../models/userModel")
+const productModel=require("../models/productModel")
+const mongoose=require("mongoose")
 
-const mid1= function ( req, res, next) {
-    req.falana= "hi there. i am adding something new to the req object"
-    console.log("Hi I am a middleware named Mid1")
-    next()
+const mid=async function (req,res,next){
+    if(req.headers.isfreeappuser===undefined){
+        res.send({msg:"the request is missing a mandatory header"})
+    }
+    else next()
 }
 
-const mid2= function ( req, res, next) {
-    console.log("Hi I am a middleware named Mid2")
-    next()
-}
 
-const mid3= function ( req, res, next) {
-    console.log("Hi I am a middleware named Mid3")
-    next()
-}
+    const checkId= async function(req,res,next){
+        let data=req.body
+        let{userId,productId}=data
+        if(!mongoose.isValidObjectId(userId)){return res.send({msg:"userId invalid"})}
+        if(!mongoose.isValidObjectId(productId)){return res.send({msg:" productId invalid"})}
 
-const mid4= function ( req, res, next) {
-    console.log("Hi I am a middleware named Mid4")
-    next()
-}
+        let checkUserId=await userModel.findById(userId)
+        let checkProductId=await productModel.findById(productId)
 
-module.exports.mid1= mid1
-module.exports.mid2= mid2
-module.exports.mid3= mid3
-module.exports.mid4= mid4
+        if(checkUserId && checkProductId){
+            next()
+        }else{
+            res.send({Error:"invalid userId or productId"})
+        }
+
+
+    }
+
+    module.exports.mid=mid
+    module.exports.checkId=checkId
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const mid1= function ( req, res, next) {
+//     req.falana= "hi there. i am adding something new to the req object"
+//     console.log("Hi I am a middleware named Mid1")
+//     next()
+// }
+
+// const mid2= function ( req, res, next) {
+//     console.log("Hi I am a middleware named Mid2")
+//     next()
+// }
+
+// const mid3= function ( req, res, next) {
+//     console.log("Hi I am a middleware named Mid3")
+//     next()
+// }
+
+// const mid4= function ( req, res, next) {
+//     console.log("Hi I am a middleware named Mid4")
+//     next()
+// }
+
+// module.exports.mid1= mid1
+// module.exports.mid2= mid2
+// module.exports.mid3= mid3
+// module.exports.mid4= mid4
